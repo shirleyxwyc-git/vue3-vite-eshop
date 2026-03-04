@@ -1,12 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+//testAPI
+import { getCategoryAPI } from '@/apis/testAPI'
+getCategoryAPI().then((res) => {
+  console.log(res)
+})
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <el-button type="primary" disabled>Primary</el-button>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <!-- 一級路由出口組件 -->
+  <router-view />
 </template>
 
 <style scoped></style>
