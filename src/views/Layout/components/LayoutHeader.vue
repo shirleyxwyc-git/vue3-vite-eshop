@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { getCategoryAPI } from '@/apis/layout'
-import { onMounted, ref } from 'vue'
+// import { getCategoryAPI } from '@/apis/layout'
+// import { onMounted, ref } from 'vue'
+//使用pinia 數據
+import { useCategoryStore } from '@/stores/category'
 
-const categoryList = ref<any[]>([])
+// const categoryList = ref<any[]>([])
 
-const getCategory = async () => {
-  const res = await getCategoryAPI()
-  console.log('res =', res)
-  console.log('res.result =', res.result)
-  categoryList.value = res.result
-  console.log('categoryList=', categoryList.value)
-}
+// const getCategory = async () => {
+//   const res = await getCategoryAPI()
+//   console.log('res =', res)
+//   console.log('res.result =', res.result)
+//   categoryList.value = res.result
+//   console.log('categoryList=', categoryList.value)
+// }
 
-onMounted(() => {
-  getCategory()
-})
+// onMounted(() => {
+//   getCategory()
+// })
+
+const categoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -24,7 +28,7 @@ onMounted(() => {
         <RouterLink to="/">閃送FlashDelivery</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home" v-for="category in categoryList" :key="category.id">
+        <li class="home" v-for="category in categoryStore.categoryList" :key="category.id">
           <RouterLink to="/">{{ category.name }}</RouterLink>
         </li>
       </ul>

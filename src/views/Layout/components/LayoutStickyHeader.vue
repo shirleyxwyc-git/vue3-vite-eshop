@@ -1,7 +1,27 @@
 <script setup lang="ts">
 import { useScroll } from '@vueuse/core'
+// import { onMounted, ref } from 'vue'
+// import { getCategoryAPI } from '@/apis/layout'
+//使用pinia 數據
+import { useCategoryStore } from '@/stores/category'
 
 const { y } = useScroll(window)
+
+// const categoryList = ref<any[]>([])
+
+// const getCategory = async () => {
+//   const res = await getCategoryAPI()
+//   console.log('res =', res)
+//   console.log('res.result =', res.result)
+//   categoryList.value = res.result
+//   console.log('categoryList=', categoryList.value)
+// }
+
+// onMounted(() => {
+//   getCategory()
+// })
+
+const categoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -10,35 +30,8 @@ const { y } = useScroll(window)
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首頁</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">居家</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">美食</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">服飾</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">母嬰</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">個護</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">嚴選</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">數碼</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">運動</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">雜項</RouterLink>
+        <li class="home" v-for="category in categoryStore.categoryList" :key="category.id">
+          <RouterLink to="/">{{ category.name }}</RouterLink>
         </li>
       </ul>
 
