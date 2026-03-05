@@ -36,7 +36,7 @@
 .app-topnav {
   background: #333;
   ul {
-    display: flex;
+    display: flex; //ul li + display:flex = 橫向選單
     height: 53px;
     justify-content: flex-end;
     align-items: center;

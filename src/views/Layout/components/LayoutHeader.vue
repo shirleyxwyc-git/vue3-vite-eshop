@@ -1,23 +1,31 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getCategoryAPI } from '@/apis/layout'
+import { onMounted, ref } from 'vue'
+
+const categoryList = ref<any[]>([])
+
+const getCategory = async () => {
+  const res = await getCategoryAPI()
+  console.log('res =', res)
+  console.log('res.result =', res.result)
+  categoryList.value = res.result
+  console.log('categoryList=', categoryList.value)
+}
+
+onMounted(() => {
+  getCategory()
+})
+</script>
 
 <template>
   <header class="app-header">
     <div class="container">
       <h1 class="logo">
-        <RouterLink to="/">小兔鲜</RouterLink>
+        <RouterLink to="/">閃送FlashDelivery</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首頁</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">居家</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">美食</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">服飾</RouterLink>
+        <li class="home" v-for="category in categoryList" :key="category.id">
+          <RouterLink to="/">{{ category.name }}</RouterLink>
         </li>
       </ul>
       <div class="search">
