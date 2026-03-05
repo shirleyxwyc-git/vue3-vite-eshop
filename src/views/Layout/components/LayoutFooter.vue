@@ -12,20 +12,20 @@
         </dl>
         <dl>
           <dt>關注我們</dt>
-          <dd><i class="iconfont icon-weixin"></i> 公众号</dd>
-          <dd><i class="iconfont icon-weibo"></i> 微博</dd>
+          <dd><i class="iconfont icon-mianshulogo"></i> Facebook</dd>
+          <dd><i class="iconfont icon-instagram"></i> Instagram</dd>
         </dl>
         <dl>
-          <dt>下载APP</dt>
+          <dt>下載APP</dt>
           <dd class="qrcode"><img src="@/assets/images/qrcode.jpg" /></dd>
           <dd class="download">
-            <span>扫描二维码</span>
-            <span>立马下载APP</span>
-            <a>下载页面</a>
+            <span>掃描QR Code</span>
+            <span>立即下載APP</span>
+            <a>下載頁面</a>
           </dd>
         </dl>
         <dl>
-          <dt>服务热线</dt>
+          <dt>Hotline</dt>
           <dd class="hotline">+852 3123 8888 <small>周一至周日 8:00-18:00</small></dd>
         </dl>
       </div>
@@ -35,30 +35,30 @@
       <div class="container">
         <div class="slogan">
           <a
-            ><i class="iconfont icon-footer01"></i>
-            <span>价格亲民</span>
+            ><i class="iconfont icon-pricetags"></i>
+            <span>價格貼地</span>
           </a>
           <a
-            ><i class="iconfont icon-footer02"></i>
-            <span>物流快捷</span>
+            ><i class="iconfont icon-quality-promise"></i>
+            <span>物流迅速</span>
           </a>
           <a
-            ><i class="iconfont icon-footer03"></i>
-            <span>品质新鲜</span>
+            ><i class="iconfont icon-delivery-truck"></i>
+            <span>品質保證</span>
           </a>
         </div>
         <!-- 版权信息 -->
         <div class="copyright">
           <p>
-            <a>关于我们</a>
-            <a>帮助中心</a>
-            <a>售后服务</a>
-            <a>配送与验收</a>
-            <a>商务合作</a>
-            <a>搜索推荐</a>
-            <a>友情链接</a>
+            <a>關於我們</a>
+            <a>幫助中心</a>
+            <a>售後服務</a>
+            <a>配送與驗收</a>
+            <a>商務合作</a>
+            <a>搜尋推薦</a>
+            <a>友情鏈接</a>
           </p>
-          <p>CopyRight © 小兔鲜儿</p>
+          <p>CopyRight © 閃送 FlashDelivery</p>
         </div>
       </div>
     </div>
