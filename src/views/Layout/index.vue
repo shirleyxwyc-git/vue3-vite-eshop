@@ -15,14 +15,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <layout-sticky-header />
-    <layout-nav />
-    <layout-header />
-    <!-- 二級路由出口 會根據路由切換-->
-    <router-view />
-    <layout-footer />
-  </div>
+  <layout-sticky-header />
+  <layout-nav />
+  <layout-header />
+  <!-- 二級路由出口 會根據路由切換-->
+  <router-view />
+  <layout-footer />
 </template>
 
 <style scoped></style>

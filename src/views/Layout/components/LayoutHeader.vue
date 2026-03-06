@@ -4,6 +4,9 @@
 //使用pinia 數據
 import { useCategoryStore } from '@/stores/category'
 
+//simplify to traditional Chinese
+import toHK from '@/utils/wordConverter'
+
 // const categoryList = ref<any[]>([])
 
 // const getCategory = async () => {
@@ -29,7 +32,7 @@ const categoryStore = useCategoryStore()
       </h1>
       <ul class="app-header-nav">
         <li class="home" v-for="category in categoryStore.categoryList" :key="category.id">
-          <RouterLink to="/">{{ category.name }}</RouterLink>
+          <RouterLink to="/">{{ toHK(category.name) }}</RouterLink>
         </li>
       </ul>
       <div class="search">
@@ -37,7 +40,7 @@ const categoryStore = useCategoryStore()
         <input type="text" placeholder="搜一搜" />
       </div>
       <!-- 头部购物车 -->
-      <HeaderCart />
+      <!-- <HeaderCart /> -->
     </div>
   </header>
 </template>
@@ -52,7 +55,7 @@ const categoryStore = useCategoryStore()
   }
 
   .logo {
-    width: 200px;
+    width: 150px;
 
     a {
       display: block;

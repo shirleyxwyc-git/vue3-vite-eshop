@@ -4,6 +4,7 @@ import { useScroll } from '@vueuse/core'
 // import { getCategoryAPI } from '@/apis/layout'
 //使用pinia 數據
 import { useCategoryStore } from '@/stores/category'
+import toHK from '@/utils/wordConverter'
 
 const { y } = useScroll(window)
 
@@ -31,7 +32,7 @@ const categoryStore = useCategoryStore()
       <!-- 导航区域 -->
       <ul class="app-header-nav">
         <li class="home" v-for="category in categoryStore.categoryList" :key="category.id">
-          <RouterLink to="/">{{ category.name }}</RouterLink>
+          <RouterLink to="/">{{ toHK(category.name) }}</RouterLink>
         </li>
       </ul>
 
@@ -46,7 +47,7 @@ const categoryStore = useCategoryStore()
 <style scoped lang="scss">
 .app-sticky-header {
   width: 100%;
-  height: 80px;
+  height: 0px;
   position: sticky;
   left: 0;
   top: 0;
@@ -63,6 +64,7 @@ const categoryStore = useCategoryStore()
     transition: all 0.3s linear;
     transform: none;
     opacity: 1;
+    height: 100px;
   }
 
   .container {
@@ -71,8 +73,8 @@ const categoryStore = useCategoryStore()
   }
 
   .logo {
-    width: 200px;
-    height: 80px;
+    width: 180px;
+    height: 100px;
     background: url('@/assets/images/logo.png') no-repeat right 2px;
     background-size: 160px auto;
   }
