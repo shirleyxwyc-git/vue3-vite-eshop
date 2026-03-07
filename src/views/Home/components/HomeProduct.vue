@@ -92,9 +92,9 @@ onMounted(() => {
     }
 
     .goods-list {
-      width: 990px;
-      display: flex;
-      flex-wrap: wrap;
+      width: 990px; //整個商品列表區域寬度 990px
+      display: flex; // 令 li 橫向排列（彈性盒子）
+      flex-wrap: wrap; // 當 li 太多排唔落一行時，自動換行
 
       li {
         width: 240px;
