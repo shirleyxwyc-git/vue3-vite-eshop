@@ -21,7 +21,7 @@ const router = createRouter({
           component: () => import('@/views/Home/index.vue'),
         },
         {
-          path: 'category',
+          path: 'category/:id', //前端路由動態參數用冒號 :param
           name: 'Category Page',
           component: () => import('@/views/Category/index.vue'),
         },

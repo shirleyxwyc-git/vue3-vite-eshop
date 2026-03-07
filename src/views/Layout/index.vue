@@ -19,6 +19,11 @@ onMounted(() => {
   <layout-nav />
   <layout-header />
   <!-- 二級路由出口 會根據路由切換-->
+  <!-- <router-view /> 會渲染「當前二級路由」對應嘅組件 -->
+  <!-- Layout/index.vue 裡面 <router-view /> 會渲染 Home/index.vue -->
+  <!-- 當路由跳去 /category/:id（例如 /category/1001）時，
+Layout/index.vue 裡面嘅 <router-view /> 就會渲染 Category/index.vue -->
+  <!-- 當路由跳去/xxx → 渲染 children 裡 path: 'xxx' 嘅組件 -->
   <router-view />
   <layout-footer />
 </template>
