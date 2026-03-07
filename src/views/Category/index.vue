@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { getCategoryDataAPI } from '@/apis/category'
-import { onMounted, reactive, watch } from 'vue'
+import { onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import toHK from '@/utils/wordConverter'
+import { getBannerAPI } from '@/apis/home'
 
 //獲取id => route.params.id
 const route = useRoute()
@@ -48,14 +49,26 @@ const categoryData = reactive<CategoryData>({} as CategoryData)
 
 const categoryDataAPI = async () => {
   const id: string = route.params.id as string
+  // if (!id) return // id 無值就唔調用 API
   const res = await getCategoryDataAPI(Number(id))
   //categoryData.value = res.result  用ref 先.value
   // 用reactive 要 用Object.assign
   Object.assign(categoryData, res.result)
 }
-
 onMounted(() => {
   categoryDataAPI()
+})
+
+const bannerList = ref<any[]>([])
+
+const getBanner = async () => {
+  const params = { distributionSite: '2' }
+  const res = await getBannerAPI(params)
+  bannerList.value = res.result
+}
+
+onMounted(() => {
+  getBanner()
 })
 //onMounted 只會執行一次，之後切換分類唔會再調用 API，breadcrumb 唔會更新。
 //要監聽 route 變化，當 id 變時自動調用 categoryDataAPI()。
@@ -81,13 +94,13 @@ watch(
         </el-breadcrumb>
       </div>
       <!-- 轮播图 -->
-      <!-- <div class="home-banner">
+      <div class="home-banner">
         <el-carousel height="500px">
-          <el-carousel-item v-for="item in bannerData" :key="item.id">
-            <img :src="item.imgUrl" alt="" />
+          <el-carousel-item v-for="banner in bannerList" :key="banner.id">
+            <img :src="banner.imgUrl" alt="" />
           </el-carousel-item>
         </el-carousel>
-      </div> -->
+      </div>
       <!-- <div class="sub-list">
         <h3>全部分类</h3>
         <ul>
@@ -196,6 +209,7 @@ watch(
 .home-banner {
   width: 1240px;
   height: 500px;
+  margin: 0 auto; /* 👈 關鍵！左右自動居中！ */
   z-index: 98;
 
   img {

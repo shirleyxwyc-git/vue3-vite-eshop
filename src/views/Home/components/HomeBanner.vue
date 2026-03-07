@@ -28,10 +28,10 @@ onMounted(() => {
 .home-banner {
   width: 1240px;
   height: 500px;
-  position: absolute;
-  left: 0;
+  position: absolute; //完全貼住「父容器左上角」
+  left: 0; // 左上角 0 點位置
   top: 0;
-  z-index: 98;
+  z-index: 98; // 層數（上下順序）數字越大 → 越面 與position:一齊用
 
   img {
     width: 100%;
