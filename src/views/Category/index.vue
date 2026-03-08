@@ -1,85 +1,10 @@
 <script setup lang="ts">
-import { getCategoryDataAPI } from '@/apis/category'
-import { onMounted, reactive, watch, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import toHK from '@/utils/wordConverter'
-import { getBannerAPI } from '@/apis/home'
+import { useBanner } from '@/views/Category/composables/useBanner'
+import { useCategory } from './composables/useCategory'
 
-//獲取id => route.params.id
-const route = useRoute()
-
-// getCategoryDataAPI returns res.result is object type,
-// define result: CategoryData using interface => TypeScript practice
-interface CategoryAPIResponse {
-  code: string
-  msg: string
-  result: CategoryData //对象类型数据 -> reactive not ref
-}
-// CategoryData 对象类型数据 ,並非只是簡單類型 / list[]-> reactive not ref
-interface CategoryData {
-  id: string
-  name: string
-  picture: null
-  children: SubCategoryList[]
-}
-interface SubCategoryList {
-  id: string
-  name: string
-  picture: string
-  parentId: null
-  parentName: null
-  goods: SubCategoryGoods[]
-  categories: null
-  brands: null
-  saleProperties: null
-}
-
-interface SubCategoryGoods {
-  id: string
-  name: string
-  desc: string
-  price: string
-  picture: string
-  discount: null
-  orderNum: number
-}
-
-//reactive ；接受对象类型数据的参数传入并return一个响应式的对象
-const categoryData = reactive<CategoryData>({} as CategoryData)
-
-const categoryDataAPI = async () => {
-  const id: string = route.params.id as string
-  // if (!id) return // id 無值就唔調用 API
-  const res = await getCategoryDataAPI(Number(id))
-  //categoryData.value = res.result  用ref 先.value
-  // 用reactive 要 用Object.assign
-  Object.assign(categoryData, res.result)
-}
-onMounted(() => {
-  categoryDataAPI()
-})
-
-const bannerList = ref<any[]>([])
-
-const getBanner = async () => {
-  const params = { distributionSite: '2' }
-  const res = await getBannerAPI(params)
-  bannerList.value = res.result
-}
-
-onMounted(() => {
-  getBanner()
-})
-//onMounted 只會執行一次，之後切換分類唔會再調用 API，breadcrumb 唔會更新。
-//要監聽 route 變化，當 id 變時自動調用 categoryDataAPI()。
-//引入 watch。監聽 route.params.id，每次變就調用 API
-
-watch(
-  () => route.params.id,
-  () => {
-    categoryDataAPI()
-  },
-)
+const { bannerList } = useBanner()
+const { categoryData } = useCategory()
 </script>
 
 <template>
