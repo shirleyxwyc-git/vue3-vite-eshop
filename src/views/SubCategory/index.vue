@@ -1,18 +1,49 @@
 <script setup lang="ts">
-import { useCategory } from '../Category/composables/useCategory'
-//import toHK from '@/utils/wordConverter'
+import { onMounted, ref } from 'vue'
+import { getCategoryFilterAPI } from '@/apis/category'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
+import toHK from '@/utils/wordConverter'
 
-const { categoryData } = useCategory()
+//獲取麵包屑導航數據
+const route = useRoute()
+
+const categoryFilter = ref<any>({})
+const getCategoryFilter = async (id: string) => {
+  const res = await getCategoryFilterAPI(Number(id))
+  categoryFilter.value = res.result
+  console.log('res.result =', res.result)
+}
+
+onMounted(() => {
+  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id || ''
+  getCategoryFilter(id || '')
+})
+
+//進階用法 onBeforeRouteUpdate：
+// 切換路由參數（/1 → /2）時 👉 自動執行
+onBeforeRouteUpdate((to) => {
+  // to = 新頁面的路由資訊
+  // 用Array.isArray 判斷，確保 id 一定係 string
+  const id = Array.isArray(to.params.id) ? to.params.id[0] : to.params.id || ''
+  getCategoryFilter(id || '')
+})
 </script>
 
 <template>
   <div class="container">
     <!-- 麵包屑導航 breadcrumb -->
     <div class="bread-container">
-      <el-breadcrumb seperator=">>">
+      <!-- 「條件渲染」(Conditional Rendering)： 加 v-if="categoryFilter && categoryFilter.id" :
+       確保 categoryFilter && categoryFilter.id一定存在，先渲染後面所有東西！
+       防止categoryFilter.id或其他屬性=undefined而報錯-->
+      <el-breadcrumb seperator=">>" v-if="categoryFilter && categoryFilter.id">
         <el-breadcrumb-item :to="{ path: '/' }">首頁</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/' }">家居</el-breadcrumb-item>
-        <el-breadcrumb-item>收納</el-breadcrumb-item>
+        <el-breadcrumb-item :to="`/category/${categoryFilter.parentId}`">{{
+          toHK(categoryFilter.parentName) || ''
+        }}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="`/category/sub/${categoryFilter.id}`">{{
+          toHK(categoryFilter.name) || ''
+        }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="sub-container">

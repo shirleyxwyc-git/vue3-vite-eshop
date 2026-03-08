@@ -15,9 +15,9 @@ export interface CategoryData {
 export interface SubCategoryList {
   id: string
   name: string
-  picture: string
-  parentId: null
-  parentName: null
+  picture: null
+  parentId: string
+  parentName: string
   goods: SubCategoryGoods[]
   categories: null
   brands: null

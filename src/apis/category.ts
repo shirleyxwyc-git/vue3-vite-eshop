@@ -13,3 +13,11 @@ export const getCategoryDataAPI = (id: number): Promise<any> => {
     params: { id }, // 一級分類 id
   })
 }
+
+export const getCategoryFilterAPI = (id: number): Promise<any> => {
+  return request({
+    url: '/category/sub/filter',
+    method: 'GET',
+    params: { id }, //二級分類 id
+  })
+}

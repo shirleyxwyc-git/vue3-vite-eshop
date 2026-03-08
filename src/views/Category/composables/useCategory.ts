@@ -9,10 +9,10 @@ export const useCategory = () => {
   //reactive ；接受对象类型数据的参数传入并return一个响应式的对象
   const categoryData = reactive<CategoryData>({} as CategoryData)
 
-  //獲取id => route.params.id
+  //需要從網址獲取id  → 用 route.params.id
   const route = useRoute()
 
-  const getCategoryData = async (id: string = route.params.id as string) => {
+  const getCategoryData = async (id: string) => {
     // if (!id) return // id 無值就唔調用 API
     const res = await getCategoryDataAPI(Number(id))
     //categoryData.value = res.result  用ref 先.value
@@ -20,7 +20,9 @@ export const useCategory = () => {
     Object.assign(categoryData, res.result)
   }
   onMounted(() => {
-    getCategoryData()
+    // // 用Array.isArray 判斷，確保 id 一定係 string
+    const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id || ''
+    getCategoryData(id || '')
   })
 
   //存在問題：使用最新路由參數請求最新的分類數據
@@ -38,7 +40,9 @@ export const useCategory = () => {
   // 切換路由參數（/1 → /2）時 👉 自動執行
   onBeforeRouteUpdate((to) => {
     // to = 新頁面的路由資訊
-    getCategoryData(to.params.id as string)
+    // 用Array.isArray 判斷，確保 id 一定係 string
+    const id = Array.isArray(to.params.id) ? to.params.id[0] : to.params.id || ''
+    getCategoryData(id || '')
   })
 
   return { categoryData, getCategoryData }
