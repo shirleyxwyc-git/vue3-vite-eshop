@@ -30,7 +30,7 @@ const { categoryData } = useCategory()
         <h3>{{ toHK(categoryData.name || '') }}館所有分類</h3>
         <ul>
           <li v-for="category in categoryData.children" :key="category.id">
-            <RouterLink to="/">
+            <RouterLink :to="`/category/sub/${category.id}`">
               <img :src="category.picture" />
               <p>{{ toHK(category.name || '') }}</p>
             </RouterLink>
