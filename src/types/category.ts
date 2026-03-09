@@ -21,7 +21,7 @@ export interface SubCategoryList {
   goods: SubCategoryGoods[]
   categories: string | null
   brands: string | null
-  saleProperties: string | null
+  saleProperties: any[] | null
 }
 
 export interface SubCategoryGoods {
@@ -35,7 +35,7 @@ export interface SubCategoryGoods {
 }
 
 export interface SubCategoryData {
-  categoryld: number
+  categoryId: number
   page: number
   pageSize: number
   sortField: 'publishTime' | 'orderNum' | 'evaluateNum'

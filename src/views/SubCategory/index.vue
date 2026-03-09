@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { getCategoryFilterAPI } from '@/apis/category'
+import { getCategoryFilterAPI, getSubCategoryAPI } from '@/apis/category'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import toHK from '@/utils/wordConverter'
+import type { SubCategoryData } from '@/types/category'
+import GoodItems from '../Home/components/GoodItems.vue'
 
 //獲取麵包屑導航數據
 const route = useRoute()
@@ -11,7 +13,7 @@ const categoryFilter = ref<any>({})
 const getCategoryFilter = async (id: string) => {
   const res = await getCategoryFilterAPI(Number(id))
   categoryFilter.value = res.result
-  console.log('res.result =', res.result)
+  console.log('getCategoryFilterAPI: res.result =', res.result)
 }
 
 onMounted(() => {
@@ -26,6 +28,32 @@ onBeforeRouteUpdate((to) => {
   // 用Array.isArray 判斷，確保 id 一定係 string
   const id = Array.isArray(to.params.id) ? to.params.id[0] : to.params.id || ''
   getCategoryFilter(id || '')
+})
+
+//獲取subCategory 商品列表渲染
+const subCategoryGoodList = ref<any[]>([])
+
+// const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+
+const requiredData = ref<SubCategoryData>()
+
+// 函數內的（參數名: SubCategoryData）唔好同外層變數名const requiredData一樣,
+// 函數內用 requiredData: SubCategoryData，會優先用參數（即最近作用域），唔會用外層個 requiredData => SubCategoryData冇 .value 屬性
+const getSubCategoryGoodList = async (data: SubCategoryData) => {
+  const res = await getSubCategoryAPI(data)
+  console.log('getSubCategoryAPI:res =', res)
+  subCategoryGoodList.value = res.result.items
+}
+
+onMounted(() => {
+  const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
+  requiredData.value = {
+    categoryId: id ? Number(id) : 0,
+    page: 1,
+    pageSize: 20,
+    sortField: 'publishTime',
+  }
+  getSubCategoryGoodList(requiredData.value)
 })
 </script>
 
@@ -53,18 +81,17 @@ onBeforeRouteUpdate((to) => {
         <el-tab-pane label="評論最多" name="commentNum"></el-tab-pane>
       </el-tabs>
       <!-- 商品列表 -->
-      <div class="body"></div>
+      <div class="body">
+        <!-- 子組件 GoodItems defineProps({ goods: ... })，goods =單個商品資料對象  -->
+        <!-- :goods="item"，將每個商品資料傳俾子組件。 -->
+        <GoodItems v-for="item in subCategoryGoodList" :key="item.id" :goods="item"></GoodItems>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
 .sub-container {
-  // padding: 32px;
-  // color: #6b778c;
-  // font-size: 32px;
-  // font-weight: 600;
-
   padding: 20px 10px;
   background-color: #fff;
 
