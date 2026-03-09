@@ -21,9 +21,11 @@ onMounted(() => {
     <!-- 呢度嘅內容就係 slot 內容，會顯示喺 HomePanel 內部 <slot /> 位置 -->
     <ul class="home-new">
       <li class="li" v-for="newItem in newList" :key="newItem.id">
-        <img :src="newItem.picture" alt="" />
-        <p class="new-name">{{ toHK(newItem.name) }}</p>
-        <p class="new-price"><i>HK$</i>{{ newItem.price }}</p>
+        <RouterLink :to="`/detail/${newItem.id}`">
+          <img :src="newItem.picture" alt="" />
+          <p class="new-name">{{ toHK(newItem.name) }}</p>
+          <p class="new-price"><i>HK$</i>{{ newItem.price }}</p>
+        </RouterLink>
       </li>
     </ul>
   </HomePanel>
