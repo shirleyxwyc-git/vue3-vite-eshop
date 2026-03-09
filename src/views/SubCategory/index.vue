@@ -5,6 +5,7 @@ import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import toHK from '@/utils/wordConverter'
 import type { SubCategoryData } from '@/types/category'
 import GoodItems from '../Home/components/GoodItems.vue'
+import type { ScrollbarDirection } from 'element-plus'
 
 //獲取麵包屑導航數據
 const route = useRoute()
@@ -61,9 +62,16 @@ onMounted(() => {
   getSubCategoryGoodList(requiredData.value)
 })
 
+//subcategory <el-tab> 切換：
 const tabChange = () => {
   console.log('tab 切換了：', requiredData.value.sortField)
   getSubCategoryGoodList(requiredData.value)
+}
+
+//加載subcategory 列表數據（infinite scroll）
+const onScroll = () => {
+  console.log('加載數據。。。')
+  requiredData.value.pageSize++
 }
 </script>
 

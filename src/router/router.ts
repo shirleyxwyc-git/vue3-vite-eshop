@@ -40,6 +40,10 @@ const router = createRouter({
       component: () => import('@/views/Login/index.vue'),
     },
   ],
+  // 切换路由自動滾動到頁面頂部 top: 0
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })
 
 export default router
