@@ -1,15 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getGoodDetailsAPI } from '@/apis/details'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import toHK from '@/utils/wordConverter'
+
+const goodDetails = ref<any>({})
+const route = useRoute()
+
+const getGoodDetails = async (): Promise<any> => {
+  const id = route.params.id
+  const res = await getGoodDetailsAPI(Number(id))
+  console.log('getGoodDetailsAPI:', res)
+  goodDetails.value = res.result
+}
+
+onMounted(() => {
+  getGoodDetails()
+})
+</script>
 
 <template>
   <div class="xtx-goods-page">
-    <div class="container">
+    <div class="container" v-if="goodDetails.categories">
       <!-- 麵包屑導航 breadcrumb -->
       <div class="bread-container">
         <el-breadcrumb seperator=">>">
           <el-breadcrumb-item :to="{ path: '/' }">首頁</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/' }">母嬰</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/' }">跑步鞋</el-breadcrumb-item>
-          <el-breadcrumb-item>抓绒保暖，毛毛虫子儿童运动鞋</el-breadcrumb-item>
+          <el-breadcrumb-item :to="`/category/${goodDetails.categories[1].id}`">{{
+            toHK(goodDetails.categories[1].name)
+          }}</el-breadcrumb-item>
+          <el-breadcrumb-item :to="`/category/sub/${goodDetails.categories[0].id}`">{{
+            toHK(goodDetails.categories[0].name)
+          }}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{ toHK(goodDetails.name) }}</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
 
@@ -24,33 +47,35 @@
               <ul class="goods-sales">
                 <li>
                   <p>銷量人氣</p>
-                  <p>100+</p>
+                  <p>{{ goodDetails.salesCount }}+</p>
                   <p><i class="iconfont icon-task-filling"></i>銷量人氣</p>
                 </li>
                 <li>
                   <p>商品評價</p>
-                  <p>200+</p>
+                  <p>{{ goodDetails.commentCount }}+</p>
                   <p><i class="iconfont icon-comment-filling"></i>查看評價</p>
                 </li>
                 <li>
                   <p>收藏人氣</p>
-                  <p>300+</p>
+                  <p>{{ goodDetails.collectCount }}+</p>
                   <p><i class="iconfont icon-favorite-filling"></i>收藏商品</p>
                 </li>
                 <li>
                   <p>品牌信息</p>
-                  <p>400+</p>
+                  <p>
+                    {{ toHK(goodDetails.brand.name) }}
+                  </p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主頁</p>
                 </li>
               </ul>
             </div>
             <div class="spec">
               <!-- 商品信息区 -->
-              <p class="g-name">抓绒保暖，毛毛虫子儿童运动鞋</p>
-              <p class="g-desc">好穿</p>
+              <p class="g-name">{{ toHK(goodDetails.name) }}</p>
+              <p class="g-desc">{{ toHK(goodDetails.desc) }}</p>
               <p class="g-price">
-                <span>200</span>
-                <span>100</span>
+                <span>{{ goodDetails.price }}</span>
+                <span>{{ goodDetails.oldPrice }}</span>
               </p>
               <div class="g-service">
                 <dl>
@@ -87,20 +112,20 @@
                 <div class="goods-detail">
                   <!-- 属性 -->
                   <ul class="attrs">
-                    <li v-for="item in 3">
-                      <span class="dt">白色</span>
-                      <span class="dd">純棉</span>
+                    <li v-for="prop in goodDetails.details.properties" :key="prop.value">
+                      <span class="dt">{{ toHK(prop.name) }}</span>
+                      <span class="dd">{{ toHK(prop.value) }}</span>
                     </li>
                   </ul>
                   <!-- 图片 -->
-                  <img />
+                  <img v-for="pic in goodDetails.details.pictures" :key="pic" :src="pic" />
                 </div>
               </div>
             </div>
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
-              <DetailHot :hotType="1" />
-              <DetailHot :hotType="2" />
+              <!-- <DetailHot :hotType="1" />
+              <DetailHot :hotType="2" /> -->
             </div>
           </div>
         </div>
