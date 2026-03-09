@@ -9,19 +9,19 @@ export interface CategoryAPIResponse {
 export interface CategoryData {
   id: string
   name: string
-  picture: null
+  picture: string | null
   children: SubCategoryList[]
 }
 export interface SubCategoryList {
   id: string
   name: string
-  picture: null
+  picture: string | null
   parentId: string
   parentName: string
   goods: SubCategoryGoods[]
-  categories: null
-  brands: null
-  saleProperties: null
+  categories: string | null
+  brands: string | null
+  saleProperties: string | null
 }
 
 export interface SubCategoryGoods {
@@ -29,7 +29,14 @@ export interface SubCategoryGoods {
   name: string
   desc: string
   price: string
-  picture: string
-  discount: null
+  picture: string | null
+  discount: string | null
   orderNum: number
+}
+
+export interface SubCategoryData {
+  categoryld: number
+  page: number
+  pageSize: number
+  sortField: 'publishTime' | 'orderNum' | 'evaluateNum'
 }

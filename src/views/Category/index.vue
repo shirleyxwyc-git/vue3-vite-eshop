@@ -31,7 +31,8 @@ const { categoryData } = useCategory()
         <ul>
           <li v-for="category in categoryData.children" :key="category.id">
             <RouterLink :to="`/category/sub/${category.id}`">
-              <img :src="category.picture" />
+              <!-- 如果 category.picture 係 null 或 undefined，就用空字串 ''，即 <img src="">，瀏覽器會當冇圖顯示，唔會報錯。 -->
+              <img :src="category.picture || ''" />
               <p>{{ toHK(category.name || '') }}</p>
             </RouterLink>
           </li>
