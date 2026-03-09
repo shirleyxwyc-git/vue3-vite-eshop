@@ -35,7 +35,12 @@ const subCategoryGoodList = ref<any[]>([])
 
 // const id = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
 
-const requiredData = ref<SubCategoryData>()
+const requiredData = ref<SubCategoryData>({
+  categoryId: 0,
+  page: 1,
+  pageSize: 20,
+  sortField: 'publishTime',
+})
 
 // 函數內的（參數名: SubCategoryData）唔好同外層變數名const requiredData一樣,
 // 函數內用 requiredData: SubCategoryData，會優先用參數（即最近作用域），唔會用外層個 requiredData => SubCategoryData冇 .value 屬性
@@ -55,6 +60,11 @@ onMounted(() => {
   }
   getSubCategoryGoodList(requiredData.value)
 })
+
+const tabChange = () => {
+  console.log('tab 切換了：', requiredData.value.sortField)
+  getSubCategoryGoodList(requiredData.value)
+}
 </script>
 
 <template>
@@ -75,7 +85,12 @@ onMounted(() => {
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs
+        v-if="requiredData"
+        v-model="requiredData.sortField"
+        @tab-change="tabChange"
+        class="subCat-tabs"
+      >
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人氣" name="orderNum"></el-tab-pane>
         <el-tab-pane label="評論最多" name="commentNum"></el-tab-pane>
