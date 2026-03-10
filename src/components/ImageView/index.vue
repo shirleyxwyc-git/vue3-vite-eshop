@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
 
 // 圖片列表
 const imageList = [
@@ -19,15 +20,54 @@ const enterhandler = (i: number) => {
   activeIndex.value = i
   console.log(i)
 }
+//2. 放大圖片： 用vueuse 的 useMouseInElement
+//2.1 獲取鼠標相對位置
+const target = ref(null)
+
+//elementX 同 elementY 係 ref
+const { elementX, elementY, isOutside } = useMouseInElement(target) as any
+
+const left = ref(0)
+const top = ref(0)
+//2.2 控制滑塊跟隨鼠標移動（監聽elementX, elementY變化，一旦變化，重新設置left / top）
+watch([elementX, elementY], () => {
+  //有效移動範圍內控制滑塊距離
+  //橫向
+  if (elementX.value > 100 && elementX.value < 300) {
+    left.value = elementX.value - 100
+  }
+  //縱向
+  if (elementY.value > 100 && elementY.value < 300) {
+    top.value = elementY.value - 100
+  }
+
+  //邊際處理
+  //橫向
+  if (elementX.value > 300) {
+    left.value = 200
+  }
+  if (elementX.value < 100) {
+    left.value = 0
+  }
+
+  //縱向
+  if (elementY.value > 300) {
+    top.value = 200
+  }
+  if (elementY.value < 100) {
+    top.value = 0
+  }
+})
 </script>
 
 <template>
+  {{ elementX }} , {{ elementY }}, {{ isOutside }}
   <div class="goods-image">
     <!--左側大圖 -->
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙層小滑塊 -->
-      <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!--小圖列表 -->
     <ul class="small">
@@ -83,8 +123,8 @@ const enterhandler = (i: number) => {
   }
 
   .layer {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     background: rgba(0, 0, 0, 0.2);
     // 绝对定位 然后跟随鼠标控制left和top属性就可以让滑块移动起来
     left: 0;
