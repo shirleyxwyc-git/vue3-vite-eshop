@@ -27,35 +27,50 @@ const target = ref(null)
 //elementX 同 elementY 係 ref
 const { elementX, elementY, isOutside } = useMouseInElement(target) as any
 
+//滑塊.layer座標
 const left = ref(0)
 const top = ref(0)
+
+//放大圖.large座標
+const positionX = ref(0)
+const positionY = ref(0)
 //2.2 控制滑塊跟隨鼠標移動（監聽elementX, elementY變化，一旦變化，重新設置left / top）
 watch([elementX, elementY], () => {
-  //有效移動範圍內控制滑塊距離
-  //橫向
-  if (elementX.value > 100 && elementX.value < 300) {
-    left.value = elementX.value - 100
-  }
-  //縱向
-  if (elementY.value > 100 && elementY.value < 300) {
-    top.value = elementY.value - 100
-  }
+  console.log('x,y 變化了')
+  if (isOutside.value) {
+    return
+  } else {
+    console.log('executing....')
+    //有效移動範圍內控制滑塊距離
+    //橫向
+    if (elementX.value > 100 && elementX.value < 300) {
+      left.value = elementX.value - 100
+    }
+    //縱向
+    if (elementY.value > 100 && elementY.value < 300) {
+      top.value = elementY.value - 100
+    }
 
-  //邊際處理
-  //橫向
-  if (elementX.value > 300) {
-    left.value = 200
-  }
-  if (elementX.value < 100) {
-    left.value = 0
-  }
+    //邊際處理
+    //橫向
+    if (elementX.value > 300) {
+      left.value = 200
+    }
+    if (elementX.value < 100) {
+      left.value = 0
+    }
 
-  //縱向
-  if (elementY.value > 300) {
-    top.value = 200
-  }
-  if (elementY.value < 100) {
-    top.value = 0
+    //縱向
+    if (elementY.value > 300) {
+      top.value = 200
+    }
+    if (elementY.value < 100) {
+      top.value = 0
+    }
+
+    //控制大圖顯示（監聽滑塊位置變化，更新放大圖背景位置）
+    positionX.value = -left.value * 2
+    positionY.value = -top.value * 2
   }
 })
 </script>
@@ -67,7 +82,7 @@ watch([elementX, elementY], () => {
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙層小滑塊 -->
-      <div class="layer" :style="{ left: `${left}px`, top: `${top}px` }"></div>
+      <div class="layer" v-show="!isOutside" :style="{ left: `${left}px`, top: `${top}px` }"></div>
     </div>
     <!--小圖列表 -->
     <ul class="small">
@@ -85,12 +100,12 @@ watch([elementX, elementY], () => {
       class="large"
       :style="[
         {
-          backgroundImage: `url(${imageList[0]})`,
-          backgroundPositionX: `0px`,
-          backgroundPositionY: `0px`,
+          backgroundImage: `url(${imageList[activeIndex]})`,
+          backgroundPositionX: `${positionX}px`,
+          backgroundPositionY: `${positionY}px`,
         },
       ]"
-      v-show="false"
+      v-show="!isOutside"
     ></div>
   </div>
 </template>
