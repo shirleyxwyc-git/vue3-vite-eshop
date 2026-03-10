@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import toHK from '@/utils/wordConverter'
 import BestSellerDetails from './components/BestSellerDetails.vue'
 import ImageView from '@/components/ImageView/index.vue'
+import XtxSku from '@/components/XtxSku/index.vue'
 
 const goodDetails = ref<any>({})
 const route = useRoute()
@@ -19,6 +20,11 @@ const getGoodDetails = async (): Promise<any> => {
 onMounted(() => {
   getGoodDetails()
 })
+
+//SKU規格被點擊切換時
+const skuChange = (sku: any) => {
+  console.log('sku is changed to: ', sku)
+}
 </script>
 
 <template>
@@ -44,7 +50,7 @@ onMounted(() => {
           <div class="goods-info">
             <div class="media">
               <!-- 圖片預覽區 -->
-              <ImageView />
+              <ImageView :imageList="goodDetails.mainPictures" />
 
               <!-- 統計數量 -->
               <ul class="goods-sales">
@@ -86,7 +92,7 @@ onMounted(() => {
                   <dd>12月好物放送，App領券直降HK$120元</dd>
                 </dl>
                 <dl>
-                  <dt>服务</dt>
+                  <dt>服務</dt>
                   <dd>
                     <span>無憂退款</span>
                     <span>快速退款</span>
@@ -96,6 +102,7 @@ onMounted(() => {
                 </dl>
               </div>
               <!-- sku组件 -->
+              <XtxSku :goods="goodDetails" @change="skuChange" />
 
               <!-- 数据组件 -->
 
