@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import toHK from '@/utils/wordConverter'
 import BestSellerDetails from './components/BestSellerDetails.vue'
+import ImageView from '@/components/ImageView/index.vue'
 
 const goodDetails = ref<any>({})
 const route = useRoute()
@@ -42,9 +43,10 @@ onMounted(() => {
         <div>
           <div class="goods-info">
             <div class="media">
-              <!-- 图片预览区 -->
+              <!-- 圖片預覽區 -->
+              <ImageView />
 
-              <!-- 统计数量 -->
+              <!-- 統計數量 -->
               <ul class="goods-sales">
                 <li>
                   <p>銷量人氣</p>
@@ -71,7 +73,7 @@ onMounted(() => {
               </ul>
             </div>
             <div class="spec">
-              <!-- 商品信息区 -->
+              <!-- 商品信息區 -->
               <p class="g-name">{{ toHK(goodDetails.name) }}</p>
               <p class="g-desc">{{ toHK(goodDetails.desc) }}</p>
               <p class="g-price">
@@ -103,6 +105,7 @@ onMounted(() => {
               </div>
             </div>
           </div>
+
           <div class="goods-footer">
             <div class="goods-article">
               <!-- 商品详情 -->
@@ -141,16 +144,65 @@ onMounted(() => {
   .goods-info {
     min-height: 600px;
     background: #fff;
-    display: flex;
+    display: flex; //直屬子元素（.media、.spec）會橫向（row）排列
 
     .media {
-      width: 580px;
-      height: 600px;
+      //冇寫 display: flex;，所以內容預設直向（column）排版
+      width: 650px;
+      height: 500px;
       padding: 30px 50px;
+    }
+    .goods-sales {
+      display: flex;
+      width: 400px;
+      align-items: center;
+      text-align: center;
+      height: 200px;
+
+      li {
+        flex: 1;
+        position: relative;
+
+        ~ li::after {
+          position: absolute;
+          top: 10px;
+          left: 0;
+          height: 60px;
+          border-left: 1px solid #e4e4e4;
+          content: '';
+        }
+
+        p {
+          &:first-child {
+            color: #999;
+          }
+
+          &:nth-child(2) {
+            color: $priceColor;
+            margin-top: 10px;
+          }
+
+          &:last-child {
+            color: #666;
+            margin-top: 10px;
+
+            i {
+              color: $xtxColor;
+              font-size: 14px;
+              margin-right: 2px;
+            }
+
+            &:hover {
+              color: $xtxColor;
+              cursor: pointer;
+            }
+          }
+        }
+      }
     }
 
     .spec {
-      flex: 1;
+      flex: 1; //自動撐滿剩餘空間，
       padding: 30px 30px 30px 0;
     }
   }
@@ -256,55 +308,6 @@ onMounted(() => {
 
           a {
             color: $xtxColor;
-          }
-        }
-      }
-    }
-  }
-
-  .goods-sales {
-    display: flex;
-    width: 400px;
-    align-items: center;
-    text-align: center;
-    height: 140px;
-
-    li {
-      flex: 1;
-      position: relative;
-
-      ~ li::after {
-        position: absolute;
-        top: 10px;
-        left: 0;
-        height: 60px;
-        border-left: 1px solid #e4e4e4;
-        content: '';
-      }
-
-      p {
-        &:first-child {
-          color: #999;
-        }
-
-        &:nth-child(2) {
-          color: $priceColor;
-          margin-top: 10px;
-        }
-
-        &:last-child {
-          color: #666;
-          margin-top: 10px;
-
-          i {
-            color: $xtxColor;
-            font-size: 14px;
-            margin-right: 2px;
-          }
-
-          &:hover {
-            color: $xtxColor;
-            cursor: pointer;
           }
         }
       }
