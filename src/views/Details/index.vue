@@ -3,6 +3,7 @@ import { getGoodDetailsAPI } from '@/apis/details'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import toHK from '@/utils/wordConverter'
+import BestSellerDetails from './components/BestSellerDetails.vue'
 
 const goodDetails = ref<any>({})
 const route = useRoute()
@@ -124,8 +125,9 @@ onMounted(() => {
             </div>
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
-              <!-- <DetailHot :hotType="1" />
-              <DetailHot :hotType="2" /> -->
+              <BestSellerDetails :bestSellerType="1" />
+              <BestSellerDetails :bestSellerType="2" />
+              <BestSellerDetails :bestSellerType="3" />
             </div>
           </div>
         </div>
