@@ -1,5 +1,6 @@
 //
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 // 建立帶有默認配置的 axios 實例 request
 const request = axios.create({
@@ -40,6 +41,12 @@ request.interceptors.response.use(
   (error) => {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    // 統一錯誤提示
+    console.log('axios error:', error.response)
+    ElMessage({
+      type: 'warning',
+      message: error.response.data.message,
+    })
     return Promise.reject(error)
   },
 )

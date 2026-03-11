@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { FormInstance } from 'element-plus'
+import { ElMessage, type FormInstance } from 'element-plus'
+import { loginAPI } from '@/apis/user'
+import type { User } from '@/types/typeInterface'
+import { useRouter } from 'vue-router'
 
 //表單驗證（用戶名+密碼）
 //1. 準備表單數據對象並綁定<el-form> （:model="form")
 const form = ref({
-  username: '',
+  account: '',
   password: '',
   //用於自定義規則才加
   agree: true,
@@ -14,7 +17,7 @@ const form = ref({
 //2. 準備規則對象並綁定<el-form>  (:rules="rules")
 const rules = {
   //默認配置
-  username: [{ required: true, message: '用戶名不能為空', trigger: 'blur' }],
+  account: [{ required: true, message: '用戶名不能為空', trigger: 'blur' }],
   password: [
     { required: true, min: 6, max: 14, message: '密碼長度需為6-14個字符', trigger: 'blur' },
   ],
@@ -43,11 +46,28 @@ const rules = {
 //5. 表單用意校驗
 //5.1 獲取表單組件實例 formRef, 操作表單/調用方法。指定 Element Plus 的表單型別（FormInstance),否則 TypeScripe 不知道有 validate 方法
 const formRef = ref<FormInstance>()
+const router = useRouter()
+
 const doLogin = () => {
   //調用實例formRef方法
-  formRef.value?.validate((valid: boolean) => {
+  formRef.value?.validate(async (valid: boolean) => {
     //valid: 所有表單都通過校驗 => true
     console.log('統一校驗： ', valid)
+    if (valid) {
+      const user: User = {
+        account: form.value.account,
+        password: form.value.password,
+      }
+      const res = await loginAPI(user)
+      console.log(res)
+      // Login succeed：
+      // 1. 提示用戶 &
+      ElMessage({ type: 'success', message: '登錄成功!' })
+      // 2.跳轉至首頁
+      //router.push('/'): 用戶點瀏覽器「返回」會回到登錄頁
+      //會替換當前歷史紀錄，用戶點「返回」不會回到登錄頁（更符合用戶體驗）。
+      router.replace('/')
+    }
   })
 }
 </script>
@@ -82,8 +102,8 @@ const doLogin = () => {
               label-width="60px"
               status-icon
             >
-              <el-form-item prop="username" label="用戶">
-                <el-input v-model="form.username" placeholder="請輸入用戶名稱" />
+              <el-form-item prop="account" label="用戶">
+                <el-input v-model="form.account" placeholder="請輸入用戶名稱" />
               </el-form-item>
               <el-form-item prop="password" label="密碼">
                 <el-input v-model="form.password" placeholder="請輸入密碼" />

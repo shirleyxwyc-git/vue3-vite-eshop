@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { getCategoryFilterAPI, getSubCategoryAPI } from '@/apis/category'
 import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import toHK from '@/utils/wordConverter'
-import type { SubCategoryData } from '@/types/category'
+import type { SubCategoryData } from '@/types/typeInterface'
 import GoodItems from '../Home/components/GoodItems.vue'
 import type { ScrollbarDirection } from 'element-plus'
 

@@ -40,3 +40,8 @@ export interface SubCategoryData {
   pageSize: number
   sortField: 'publishTime' | 'orderNum' | 'evaluateNum'
 }
+
+export interface User {
+  account: string
+  password: string
+}

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { SubCategoryData } from '@/types/category'
+import type { SubCategoryData } from '@/types/typeInterface'
 
 /**
  * 根據一級分類 id 獲取該分類及其二級分類資料

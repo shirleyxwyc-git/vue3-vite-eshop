@@ -3,7 +3,7 @@ import { useRoute } from 'vue-router'
 import { reactive, onMounted, watch } from 'vue'
 import { getCategoryDataAPI } from '@/apis/category'
 import { onBeforeRouteUpdate } from 'vue-router'
-import type { CategoryData } from '@/types/category'
+import type { CategoryData } from '@/types/typeInterface'
 
 export const useCategory = () => {
   //reactive ；接受对象类型数据的参数传入并return一个响应式的对象
