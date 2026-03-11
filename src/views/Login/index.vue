@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage, type FormInstance } from 'element-plus'
-import { loginAPI } from '@/apis/user'
+//import { loginAPI } from '@/apis/user'
 import type { User } from '@/types/typeInterface'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 
 //表單驗證（用戶名+密碼）
 //1. 準備表單數據對象並綁定<el-form> （:model="form")
 const form = ref({
-  account: '',
-  password: '',
+  account: 'xiaotuxian001',
+  password: '123456',
   //用於自定義規則才加
   agree: true,
 })
@@ -58,8 +61,9 @@ const doLogin = () => {
         account: form.value.account,
         password: form.value.password,
       }
-      const res = await loginAPI(user)
-      console.log(res)
+      // const res = await loginAPI(user)
+      // console.log(res)
+      await userStore.getUserInfo(user)
       // Login succeed：
       // 1. 提示用戶 &
       ElMessage({ type: 'success', message: '登錄成功!' })

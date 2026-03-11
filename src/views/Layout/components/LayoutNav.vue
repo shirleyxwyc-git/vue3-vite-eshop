@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
+const userStore = useUserStore()
 const router = useRouter()
 
 const goLogin = (): void => {
@@ -14,7 +16,7 @@ const goLogin = (): void => {
       <ul>
         <template v-if="true">
           <li>
-            <a><i class="iconfont icon-user"></i>周杰倫</a>
+            <a><i class="iconfont icon-user"></i>{{ userStore.userInfo.nickname }}</a>
           </li>
 
           <li>

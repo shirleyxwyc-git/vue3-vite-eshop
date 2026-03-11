@@ -7,7 +7,7 @@
 </template>
 
 <style scoped lang="scss">
-.test {
-  color: #1dc779;
-}
+// .test {
+//   color: #1dc779;
+// }
 </style>
