@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { FormInstance } from 'element-plus'
 
 //表單驗證（用戶名+密碼）
-//1. 準備表單對象並綁定<el-form> （:model="form")
+//1. 準備表單數據對象並綁定<el-form> （:model="form")
 const form = ref({
   username: '',
   password: '',
@@ -12,10 +13,12 @@ const form = ref({
 
 //2. 準備規則對象並綁定<el-form>  (:rules="rules")
 const rules = {
+  //默認配置
   username: [{ required: true, message: '用戶名不能為空', trigger: 'blur' }],
   password: [
     { required: true, min: 6, max: 14, message: '密碼長度需為6-14個字符', trigger: 'blur' },
   ],
+  //默認配置沒有，用validator自定義：for checkbox : agree on privacy , terms & condition
   agree: [
     {
       validator: (rule: any, value: any, callback: any) => {
@@ -36,6 +39,17 @@ const rules = {
 //3. 指定表單域<ef-form-item> 的校驗字段名prop="username"/prop="password"
 
 //4. 表單對象進行雙向綁定 :v-model:="form.username"/:v-model:="form.password"
+
+//5. 表單用意校驗
+//5.1 獲取表單組件實例 formRef, 操作表單/調用方法。指定 Element Plus 的表單型別（FormInstance),否則 TypeScripe 不知道有 validate 方法
+const formRef = ref<FormInstance>()
+const doLogin = () => {
+  //調用實例formRef方法
+  formRef.value?.validate((valid: boolean) => {
+    //valid: 所有表單都通過校驗 => true
+    console.log('統一校驗： ', valid)
+  })
+}
 </script>
 
 <template>
@@ -61,6 +75,7 @@ const rules = {
         <div class="account-box">
           <div class="form">
             <el-form
+              ref="formRef"
               :model="form"
               :rules="rules"
               label-position="right"
@@ -78,7 +93,7 @@ const rules = {
                   我已同意隱私條款及服務條款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">點擊登錄</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin">點擊登錄</el-button>
             </el-form>
           </div>
         </div>
