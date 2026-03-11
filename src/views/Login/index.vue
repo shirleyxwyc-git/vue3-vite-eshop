@@ -1,4 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+//表單驗證（用戶名+密碼）
+//1. 準備表單對象並綁定<el-form> （:model="form")
+const form = ref({
+  username: '',
+  password: '',
+})
+
+//2. 準備規則對象並綁定<el-form>  (:rules="rules")
+const rules = {
+  username: [{ required: true, message: '用戶名不能為空', trigger: 'blur' }],
+  password: [
+    { required: true, min: 6, max: 14, message: '密碼長度需為6-14個字符', trigger: 'blur' },
+  ],
+}
+
+//3. 指定表單域<ef-form-item> 的校驗字段名prop="username"/prop="password"
+
+//4. 表單對象進行雙向綁定 :v-model:="form.username"/:v-model:="form.password"
+</script>
 
 <template>
   <div>
@@ -22,12 +43,18 @@
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form label-position="right" label-width="60px" status-icon>
-              <el-form-item prop="account" label="用戶">
-                <el-input placeholder="請輸入用戶名稱" />
+            <el-form
+              :model="form"
+              :rules="rules"
+              label-position="right"
+              label-width="60px"
+              status-icon
+            >
+              <el-form-item prop="username" label="用戶">
+                <el-input :v-model="form.username" placeholder="請輸入用戶名稱" />
               </el-form-item>
               <el-form-item prop="password" label="密碼">
-                <el-input placeholder="請輸入密碼" />
+                <el-input :v-model="form.password" placeholder="請輸入密碼" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
                 <el-checkbox size="large"> 我已同意隱私條款及服務條款 </el-checkbox>
