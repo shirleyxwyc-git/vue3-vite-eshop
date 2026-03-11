@@ -6,6 +6,8 @@ import { ref } from 'vue'
 const form = ref({
   username: '',
   password: '',
+  //用於自定義規則才加
+  agree: true,
 })
 
 //2. 準備規則對象並綁定<el-form>  (:rules="rules")
@@ -13,6 +15,21 @@ const rules = {
   username: [{ required: true, message: '用戶名不能為空', trigger: 'blur' }],
   password: [
     { required: true, min: 6, max: 14, message: '密碼長度需為6-14個字符', trigger: 'blur' },
+  ],
+  agree: [
+    {
+      validator: (rule: any, value: any, callback: any) => {
+        console.log(value)
+        //自定義邏輯：
+        //勾選 checkbox 通過， 不勾選 checkbox 不通過
+        //
+        if (value) {
+          callback()
+        } else {
+          callback(new Error('請選擇同意隱私條款及服務條款'))
+        }
+      },
+    },
   ],
 }
 
@@ -51,13 +68,15 @@ const rules = {
               status-icon
             >
               <el-form-item prop="username" label="用戶">
-                <el-input :v-model="form.username" placeholder="請輸入用戶名稱" />
+                <el-input v-model="form.username" placeholder="請輸入用戶名稱" />
               </el-form-item>
               <el-form-item prop="password" label="密碼">
-                <el-input :v-model="form.password" placeholder="請輸入密碼" />
+                <el-input v-model="form.password" placeholder="請輸入密碼" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
-                <el-checkbox size="large"> 我已同意隱私條款及服務條款 </el-checkbox>
+                <el-checkbox v-model="form.agree" size="large">
+                  我已同意隱私條款及服務條款
+                </el-checkbox>
               </el-form-item>
               <el-button size="large" class="subBtn">點擊登錄</el-button>
             </el-form>
