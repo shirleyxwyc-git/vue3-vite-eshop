@@ -8,10 +8,15 @@ import router from '@/router/router'
 import '@/styles/common.scss'
 // 引入圖片懶加載指令插件並切註冊
 import { lazyPlugin } from '@/directives/index'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia()
+//註冊pinia持久化插件
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 app.use(lazyPlugin)
