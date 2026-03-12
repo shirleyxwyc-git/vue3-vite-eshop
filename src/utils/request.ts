@@ -1,6 +1,7 @@
 //
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
+import { useUserStore } from '@/stores/user'
 
 // 建立帶有默認配置的 axios 實例 request
 const request = axios.create({
@@ -18,6 +19,20 @@ request.interceptors.request.use(
     // ======================================
 
     // 1. 加 token（登錄驗證）
+    // 1.1 從pinia 獲取token數據：
+    const userStore = useUserStore()
+    const token = userStore.userInfo.token
+    //1.2 按照後端要求拼接token數據：
+    // 如果有 token → 自動塞進 headers
+    if (token) {
+      //如果後端在 application.yml沒有設置了 admin-token-name，
+      // 默認token名='Authorization' 及默認 token前綴='Bearer'
+      // `Bear ${token}`:Bear 與 ${token}之間一定要有space
+      config.headers.Authorization = `Bear ${token}`
+      //如果後端在 application.yml 設置了 admin-token-name: token，
+      // 這代表後端期望你在 header 裡傳遞的 token 名稱是 token，而不是 Authorization。
+      //config.headers.token = token
+    }
 
     // 2. 加自定義 header
 
@@ -35,7 +50,8 @@ request.interceptors.response.use(
   (response) => {
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
-    return response.data
+
+    return response.data //（response.data 包含 code、msg、result）
   },
   // 請求出錯時的處理函數，會把錯誤包裝成 rejected promise
   (error) => {

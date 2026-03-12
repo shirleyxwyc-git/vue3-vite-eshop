@@ -14,7 +14,8 @@ const goLogin = (): void => {
   <nav class="app-topnav">
     <div class="container">
       <ul>
-        <template v-if="true">
+        <!-- 有token=已登錄，顯示nickname ， 沒有token=顯示請先登錄-->
+        <template v-if="userStore.userInfo.token">
           <li>
             <a><i class="iconfont icon-user"></i>{{ userStore.userInfo.nickname }}</a>
           </li>
