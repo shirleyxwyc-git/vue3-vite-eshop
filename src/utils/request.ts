@@ -2,6 +2,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
+import router from '@/router/router'
 
 // 建立帶有默認配置的 axios 實例 request
 const request = axios.create({
@@ -28,7 +29,7 @@ request.interceptors.request.use(
       //如果後端在 application.yml沒有設置了 admin-token-name，
       // 默認token名='Authorization' 及默認 token前綴='Bearer'
       // `Bear ${token}`:Bear 與 ${token}之間一定要有space
-      config.headers.Authorization = `Bear ${token}`
+      config.headers.Authorization = `Bearer ${token}`
       //如果後端在 application.yml 設置了 admin-token-name: token，
       // 這代表後端期望你在 header 裡傳遞的 token 名稱是 token，而不是 Authorization。
       //config.headers.token = token
@@ -58,11 +59,20 @@ request.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     // 統一錯誤提示
-    console.log('axios error:', error.response)
+    console.log('axios error:', error)
+
+    const userStore = useUserStore()
+
     ElMessage({
       type: 'warning',
       message: error.response.data.message,
     })
+
+    //token expired ===401
+    if (error.response.status === 401) {
+      userStore.clearUserInfo()
+      router.push('/login')
+    }
     return Promise.reject(error)
   },
 )
