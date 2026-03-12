@@ -18,7 +18,7 @@ request.interceptors.request.use(
     // 發送請求 之前 執行， 你想做的所有事情，全部寫在這裡！
     // ======================================
 
-    // 1. 加 token（登錄驗證）
+    // 1. 加 token（登錄驗證），一次配置，之後每個http request 都自動攜帶 token
     // 1.1 從pinia 獲取token數據：
     const userStore = useUserStore()
     const token = userStore.userInfo.token

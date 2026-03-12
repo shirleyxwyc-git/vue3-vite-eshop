@@ -8,6 +8,12 @@ const router = useRouter()
 const goLogin = (): void => {
   router.push('/login')
 }
+
+const confirmLogout = () => {
+  console.log('用戶退出登錄了...')
+  userStore.clearUserInfo()
+  router.push('/login')
+}
 </script>
 
 <template>
@@ -25,7 +31,7 @@ const goLogin = (): void => {
               title="確認退出嗎？"
               confirm-button-text="確認"
               cancel-button-text="取消"
-              @confirm="goLogin"
+              @confirm="confirmLogout"
             >
               <template #reference>
                 <a>退出登錄頁</a>
