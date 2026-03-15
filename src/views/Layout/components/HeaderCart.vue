@@ -28,8 +28,8 @@ const cartStore = useCartStore()
               <p class="price">HK${{ item.price }}</p>
               <p class="count">x{{ item.count }}</p>
             </div>
+            <i class="iconfont icon-delete" @click="cartStore.deleteCart(item.skuId)"></i>
           </RouterLink>
-          <!-- <i class="iconfont icon-close-new" @click="cartStore.delCart(i.skuId)"></i> -->
         </div>
       </div>
       <div class="foot">

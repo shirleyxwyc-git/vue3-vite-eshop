@@ -42,7 +42,7 @@ const categoryStore = useCategoryStore()
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜" />
       </div>
-      <!-- 头部购物车 -->
+      <!-- 頭部購物車 -->
       <HeaderCart />
     </div>
   </header>
