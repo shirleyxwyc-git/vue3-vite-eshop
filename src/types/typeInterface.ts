@@ -49,6 +49,7 @@ export interface User {
 export interface SelectedGood {
   id: number
   name: string
+  picture: string
   price: string
   count: number
   skuId: string

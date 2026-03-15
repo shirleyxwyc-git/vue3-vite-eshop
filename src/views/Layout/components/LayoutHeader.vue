@@ -3,6 +3,7 @@
 // import { onMounted, ref } from 'vue'
 //使用pinia 數據
 import { useCategoryStore } from '@/stores/category'
+import HeaderCart from './HeaderCart.vue'
 
 //simplify to traditional Chinese
 import toHK from '@/utils/wordConverter'
@@ -42,7 +43,7 @@ const categoryStore = useCategoryStore()
         <input type="text" placeholder="搜一搜" />
       </div>
       <!-- 头部购物车 -->
-      <!-- <HeaderCart /> -->
+      <HeaderCart />
     </div>
   </header>
 </template>
