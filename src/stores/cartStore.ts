@@ -1,7 +1,7 @@
 //封裝購物車模塊
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { SelectedGood } from '@/types/typeInterface'
 
 export const useCartStore = defineStore(
@@ -30,7 +30,20 @@ export const useCartStore = defineStore(
         cartList.value.splice(index, 1) //從陣列的第 index 個位置開始，刪除 1 個元素。
       }
     }
-    return { cartList, addcart, deleteCart }
+
+    //computed 總件數
+    const totalCount = computed(() => {
+      return cartList.value.reduce((sum, item) => sum + item.count, 0)
+    })
+
+    //computed 總價 price * count
+    const totalPrice = computed(() => {
+      return cartList.value.reduce((sum, item) => {
+        return sum + item.count * item.price
+      }, 0)
+    })
+
+    return { cartList, addcart, deleteCart, totalCount, totalPrice }
   },
   {
     persist: true,

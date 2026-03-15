@@ -50,7 +50,7 @@ export interface SelectedGood {
   id: number
   name: string
   picture: string
-  price: string
+  price: number
   count: number
   skuId: string
   attrsText: string
