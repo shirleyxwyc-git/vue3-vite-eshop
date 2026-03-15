@@ -6,6 +6,10 @@ import toHK from '@/utils/wordConverter'
 import BestSellerDetails from './components/BestSellerDetails.vue'
 import ImageView from '@/components/ImageView/index.vue'
 import XtxSku from '@/components/XtxSku/index.vue'
+import { ElMessage } from 'element-plus'
+import { useCartStore } from '@/stores/cartStore'
+
+const cartStore = useCartStore()
 
 const goodDetails = ref<any>({})
 const route = useRoute()
@@ -22,8 +26,36 @@ onMounted(() => {
 })
 
 //SKU規格被點擊切換時
+let skuObj: any = {}
 const skuChange = (sku: any) => {
   console.log('sku is changed to: ', sku)
+  skuObj = sku
+}
+
+// count 點擊加入購物車件數
+const count = ref(1)
+const countChange = (count: number) => {
+  console.log('count = ', count)
+}
+
+//添加購物車
+const addCart = () => {
+  if (skuObj.skuId) {
+    //已選擇所有款式規格 trigger action addcart({selectedGood})
+    //define interface SelectedGood in typtInterface.ts
+    cartStore.addcart({
+      id: goodDetails.value.id,
+      name: goodDetails.value.name,
+      price: goodDetails.value.price,
+      count: count.value,
+      skuId: skuObj.skuId,
+      attrsText: skuObj.specsText,
+      selected: true,
+    })
+  } else {
+    // 未選擇所有款式規格 提示用戶
+    ElMessage.warning('請選擇款式。')
+  }
 }
 </script>
 
@@ -104,11 +136,12 @@ const skuChange = (sku: any) => {
               <!-- sku组件 -->
               <XtxSku :goods="goodDetails" @change="skuChange" />
 
-              <!-- 数据组件 -->
+              <!-- 數據組件-->
+              <el-input-number v-model="count" @change="countChange" />
 
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn"> 加入購物車 </el-button>
+                <el-button size="large" class="btn" @Click="addCart"> 加入購物車 </el-button>
               </div>
             </div>
           </div>

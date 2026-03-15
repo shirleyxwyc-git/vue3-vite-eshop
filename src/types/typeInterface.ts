@@ -45,3 +45,13 @@ export interface User {
   account: string
   password: string
 }
+
+export interface SelectedGood {
+  id: number
+  name: string
+  price: string
+  count: number
+  skuId: string
+  attrsText: string
+  selected: boolean
+}
