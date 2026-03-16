@@ -25,6 +25,8 @@ const handleSelectionChange = (selectedList: any[]) => {
       target.selected = true
     }
   })
+  //3. 改 Pinia 入面嘅 isAll
+  cartStore.isAll = selectedList.length === cartStore.cartList.length
 }
 </script>
 

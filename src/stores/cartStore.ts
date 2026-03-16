@@ -9,6 +9,7 @@ export const useCartStore = defineStore(
   () => {
     //Define State:
     const cartList = ref<SelectedGood[]>([])
+    const isAll = ref(false)
 
     //Action 1:添加購物車
     const addcart = (selectedGood: SelectedGood) => {
@@ -31,6 +32,13 @@ export const useCartStore = defineStore(
       }
     }
 
+    //Actions 3:
+    const setAllselected = (status: boolean) => {
+      cartList.value.forEach((item) => {
+        item.selected = status
+      })
+    }
+
     //computed 總件數
     const totalCount = computed(() => {
       return cartList.value.reduce((sum, item) => sum + item.count, 0)
@@ -43,7 +51,7 @@ export const useCartStore = defineStore(
       }, 0)
     })
 
-    return { cartList, addcart, deleteCart, totalCount, totalPrice }
+    return { cartList, isAll, addcart, deleteCart, setAllselected, totalCount, totalPrice }
   },
   {
     persist: true,
