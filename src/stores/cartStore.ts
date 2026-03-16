@@ -39,19 +39,41 @@ export const useCartStore = defineStore(
       })
     }
 
-    //computed 總件數
+    //1.computed 總件數
     const totalCount = computed(() => {
       return cartList.value.reduce((sum, item) => sum + item.count, 0)
     })
 
-    //computed 總價 price * count
+    //2.computed 總價 price * count
     const totalPrice = computed(() => {
       return cartList.value.reduce((sum, item) => {
         return sum + item.count * item.price
       }, 0)
     })
 
-    return { cartList, isAll, addcart, deleteCart, setAllselected, totalCount, totalPrice }
+    //3.已選擇數量
+    const selectedCount = computed(() =>
+      cartList.value.filter((item) => item.selected).reduce((sum, item) => sum + item.count, 0),
+    )
+
+    //4.已選擇商品價錢合計
+    const selectedPrice = computed(() =>
+      cartList.value
+        .filter((item) => item.selected)
+        .reduce((sum, item) => sum + item.count * item.price, 0),
+    )
+
+    return {
+      cartList,
+      isAll,
+      addcart,
+      deleteCart,
+      setAllselected,
+      totalCount,
+      totalPrice,
+      selectedCount,
+      selectedPrice,
+    }
   },
   {
     persist: true,

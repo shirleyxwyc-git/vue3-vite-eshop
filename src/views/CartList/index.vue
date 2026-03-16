@@ -83,8 +83,9 @@ const handleSelectionChange = (selectedList: any[]) => {
       <div class="cart-footer" v-if="cartStore.cartList.length">
         <div class="left">
           <span>
-            共 {{ cartStore.totalCount }} 件商品， 總價:
-            <span class="red">HK$ {{ cartStore.totalPrice.toFixed(2) }}</span>
+            共 {{ cartStore.totalCount }} 件商品， 已選擇 {{ cartStore.selectedCount }} 件商品，
+            已選擇商品總價:
+            <span class="red">HK$ {{ cartStore.selectedPrice.toFixed(2) }}</span>
           </span>
         </div>
 
@@ -130,7 +131,7 @@ const handleSelectionChange = (selectedList: any[]) => {
   }
 
   .left {
-    width: 400px;
+    width: 600px;
   }
   .right {
     margin-left: auto;
