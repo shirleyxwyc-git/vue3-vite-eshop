@@ -38,8 +38,9 @@ const cartStore = useCartStore()
           <p>HK$ {{ cartStore.totalPrice.toFixed(2) }}</p>
         </div>
         <el-button size="large" type="primary" @click="$router.push('/cartlist')"
-          >去購物車結算</el-button
-        >
+          >去購物車結算
+          <RouterLink to="/cartlist"></RouterLink>
+        </el-button>
       </div>
     </div>
   </div>
