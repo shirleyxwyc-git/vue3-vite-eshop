@@ -4,7 +4,7 @@ import { ElMessage, type FormInstance } from 'element-plus'
 //import { loginAPI } from '@/apis/user'
 import type { User } from '@/types/typeInterface'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 
 const userStore = useUserStore()
 

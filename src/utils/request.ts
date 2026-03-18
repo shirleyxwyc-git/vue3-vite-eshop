@@ -1,7 +1,7 @@
 //
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/userStore'
 import router from '@/router/router'
 
 // 建立帶有默認配置的 axios 實例 request

@@ -56,3 +56,9 @@ export interface SelectedGood {
   attrsText: string
   selected: boolean
 }
+
+export interface APIResponse<T> {
+  code: string
+  msg: string
+  result: T
+}

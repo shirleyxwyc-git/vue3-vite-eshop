@@ -3,7 +3,7 @@ import { useScroll } from '@vueuse/core'
 // import { onMounted, ref } from 'vue'
 // import { getCategoryAPI } from '@/apis/layout'
 //使用pinia 數據
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 import toHK from '@/utils/wordConverter'
 
 const { y } = useScroll(window)

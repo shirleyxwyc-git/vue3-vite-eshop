@@ -2,7 +2,7 @@
 // import { getCategoryAPI } from '@/apis/layout'
 // import { onMounted, ref } from 'vue'
 //使用pinia 數據
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 import HeaderCart from './HeaderCart.vue'
 
 //simplify to traditional Chinese

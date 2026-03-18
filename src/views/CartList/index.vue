@@ -28,12 +28,19 @@ const handleSelectionChange = (selectedList: any[]) => {
   //3. 改 Pinia 入面嘅 isAll
   cartStore.isAll = selectedList.length === cartStore.cartList.length
 }
+
+// Vue 事件（如 @confirm）呼叫 deleteCart，不會等這個 async 函數執行完畢（即 Promise resolve），就繼續後面的流程。
+// 如果你要等它完成再做事，要自己用 async/await 包裝。
+const handleDelete = async (skuId: string) => {
+  await cartStore.deleteCart(skuId)
+  console.log('刪除後 cartStore.cartList:', cartStore.cartList)
+}
 </script>
 
 <template>
   <div class="xtx-cart-page">
     <div class="container m-top-20">
-      <el-table :data="cartList" width="100%" @selection-change="handleSelectionChange">
+      <el-table :data="cartStore.cartList" width="100%" @selection-change="handleSelectionChange">
         <!-- 單選框 -->
         <el-table-column type="selection" width="40" />
 
@@ -54,7 +61,7 @@ const handleSelectionChange = (selectedList: any[]) => {
         <!-- 數量 -->
         <el-table-column prop="count" label="數量" width="200" align="center">
           <template #default="scope">
-            <el-input-number v-model="scope.row.count" @change="countChange" />
+            <el-input-number v-model="scope.row.count" :min="1" @change="countChange" />
           </template>
         </el-table-column>
 
@@ -69,7 +76,7 @@ const handleSelectionChange = (selectedList: any[]) => {
           <template #default="scope">
             <el-popconfirm
               title="請確認是否刪除選購此商品?"
-              @confirm="cartStore.deleteCart(scope.row.skuId)"
+              @confirm="() => handleDelete(scope.row.skuId)"
             >
               <template #reference>
                 <el-button>刪除</el-button>
