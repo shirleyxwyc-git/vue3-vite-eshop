@@ -83,6 +83,10 @@ export const useCartStore = defineStore(
         item.selected = status
       })
     }
+    //Action 4: 退出登錄是-清空購物車
+    const clearCart = () => {
+      cartList.value = <SelectedGood[]>[]
+    }
 
     //1.computed 總件數
     const totalCount = computed(() => {
@@ -118,6 +122,7 @@ export const useCartStore = defineStore(
       totalPrice,
       selectedCount,
       selectedPrice,
+      clearCart,
     }
   },
   {

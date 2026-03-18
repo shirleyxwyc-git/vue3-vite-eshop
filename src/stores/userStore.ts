@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { loginAPI } from '@/apis/user'
 import type { User } from '@/types/typeInterface'
+import { useCartStore } from './cartStore'
 
 export const useUserStore = defineStore(
   'user',
@@ -16,6 +17,10 @@ export const useUserStore = defineStore(
     //3. log out時清空用戶信息
     const clearUserInfo = () => {
       userInfo.value = {}
+      //退出登錄清除購物車的action
+      // 在這裡呼叫 useCartStore()
+      const cartStore = useCartStore()
+      cartStore.clearCart()
     }
     //4. 以對象形式將 state & actions return
     return { userInfo, getUserInfo, clearUserInfo }
