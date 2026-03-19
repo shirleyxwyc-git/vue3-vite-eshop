@@ -62,3 +62,10 @@ export interface APIResponse<T> {
   msg: string
   result: T
 }
+
+// 定義型別
+export interface MergeCartItem {
+  skuId: string
+  selected: boolean
+  count: number
+}

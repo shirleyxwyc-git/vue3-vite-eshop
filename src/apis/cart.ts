@@ -1,8 +1,8 @@
-import type { APIResponse, SelectedGood } from '@/types/typeInterface'
+import type { APIResponse, SelectedGood, MergeCartItem } from '@/types/typeInterface'
 import request from '@/utils/request'
 
 //加入購物車相關接口
-export const insertCartAPI = (skuId: String, count: Number) => {
+export const insertCartAPI = (skuId: string, count: number) => {
   return request({
     url: '/member/cart',
     method: 'POST',
@@ -25,12 +25,21 @@ export const findNewCartListAPI = async (): Promise<APIResponse<SelectedGood[]>>
 }
 
 //刪除購物車
-export const deleteCartAPI = (ids: String[]) => {
+export const deleteCartAPI = (ids: string[]) => {
   return request({
     url: '/member/cart',
     method: 'DELETE',
     data: {
       ids,
     },
+  })
+}
+
+//登錄時合併未登錄時的本地購物車與服務端的購物車
+export const mergeCartAPI = (mergedCart: MergeCartItem[]) => {
+  return request({
+    url: 'member/cart/merge',
+    method: 'POST',
+    data: mergedCart,
   })
 }

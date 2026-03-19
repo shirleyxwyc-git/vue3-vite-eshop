@@ -66,6 +66,7 @@ export const useCartStore = defineStore(
             console.error('購物車接口返回格式異常', res)
           }
         } catch (err) {
+          cartList.value = []
           console.error('刪除購物車失敗', err)
         }
       } else {
@@ -85,7 +86,7 @@ export const useCartStore = defineStore(
     }
     //Action 4: 退出登錄是-清空購物車
     const clearCart = () => {
-      cartList.value = <SelectedGood[]>[]
+      cartList.value = []
     }
 
     //1.computed 總件數
