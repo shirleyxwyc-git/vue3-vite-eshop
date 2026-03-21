@@ -137,3 +137,61 @@ export interface CreateOrder {
   goods: CreateOrderGood[]
   addressId: string
 }
+
+//payInfo
+// 商品規格屬性
+export interface OrderProperty {
+  propertyMainName: string
+  propertyValueName: string
+}
+
+// 訂單商品
+export interface OrderSku {
+  id: string
+  spuId: string
+  name: string
+  quantity: number
+  image: string
+  realPay: number
+  curPrice: number
+  totalMoney: null | number
+  properties: OrderProperty[]
+  attrsText: string
+}
+
+// 訂單主體
+export interface OrderResult {
+  id: string
+  createTime: string
+  payType: number
+  orderState: number
+  payLatestTime: string
+  countdown: number
+  postFee: number
+  payMoney: number
+  payChannel: number
+  payState: number
+  totalMoney: number
+  totalNum: number
+  deliveryTimeType: number
+  receiverContact: string
+  receiverMobile: string
+  provinceCode: string
+  cityCode: string
+  countyCode: string
+  receiverAddress: string
+  payTime: string | null
+  consignTime: string | null
+  endTime: string | null
+  closeTime: string | null
+  evaluationTime: string | null
+  skus: OrderSku[]
+  arrivalEstimatedTime: string | null
+}
+
+// 整體 API 返回
+export interface OrderResponse {
+  code: string
+  msg: string
+  result: OrderResult
+}

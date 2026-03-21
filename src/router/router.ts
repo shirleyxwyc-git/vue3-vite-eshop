@@ -23,6 +23,7 @@ const router = createRouter({
           component: () => import('@/views/Home/index.vue'),
         },
         {
+          //http://..../category/1005002
           path: 'category/:id', //前端路由動態參數用冒號 :param
           name: 'Category Page',
           component: () => import('@/views/Category/index.vue'),
@@ -46,6 +47,12 @@ const router = createRouter({
           path: 'checkout',
           name: 'Checkout Page',
           component: () => import('@/views/Checkout/index.vue'),
+        },
+        {
+          // http:..../pay?id=xxx 這種查詢參數，路由應該寫成 path: '/pay'，不要 :id
+          path: '/pay',
+          name: 'Payment Page',
+          component: () => import('@/views/Pay/index.vue'),
         },
       ],
     },

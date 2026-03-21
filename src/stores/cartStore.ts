@@ -16,6 +16,21 @@ export const useCartStore = defineStore(
     const cartList = ref<SelectedGood[]>([])
     const isAll = ref(false)
 
+    const updateNewList = async () => {
+      const res = await findNewCartListAPI()
+      if (res && Array.isArray(res.result)) {
+        //3. 用API購物車列表覆蓋本地購物車列表
+        cartList.value = res.result.map((item: any) => ({
+          ...item,
+          price: Number(item.price),
+        }))
+      } else {
+        cartList.value = []
+        console.error('購物車接口返回格式異常', res)
+      }
+      return res
+    }
+
     //Action 1:添加購物車
     const addcart = async (selectedGood: SelectedGood) => {
       if (isLogin.value) {
@@ -24,31 +39,25 @@ export const useCartStore = defineStore(
         await insertCartAPI(selectedGood.skuId, selectedGood.count)
         //2.調用最新購物車接口
         // 外部直接拿到後端返回的資料res = response.data in request.ts ={ code, msg, result }）
-        const res: APIResponse<SelectedGood[]> = await findNewCartListAPI()
-        if (res && Array.isArray(res.result)) {
-          //3.用接口購物車覆蓋本地購物車
-          cartList.value = res.result.map((item: any) => ({
-            ...item,
-            price: Number(item.price),
-          }))
+        const res: APIResponse<SelectedGood[]> = await updateNewList()
+        //非登錄狀態
+        //添加購物車操作
+        //已添加過 count+1
+        //沒有添加過 直接push
+        const item = cartList.value.find((item) => selectedGood.skuId === item.skuId)
+        if (item) {
+          item.count++
         } else {
-          cartList.value = []
-          console.error('購物車接口返回 undefined 或格式異常', res)
+          cartList.value.push(selectedGood)
         }
-        // 已登入時，這裡 return，避免執行本地 push
-        return
-      }
-      //非登錄狀態
-      //添加購物車操作
-      //已添加過 count+1
-      //沒有添加過 直接push
-      const item = cartList.value.find((item) => selectedGood.skuId === item.skuId)
-      if (item) {
-        item.count++
-      } else {
-        cartList.value.push(selectedGood)
       }
     }
+
+    //Action: 同步後端購物車到 Pinia 狀態
+    const findNewCartListAPIAction = async () => {
+      const res = await updateNewList()
+    }
+
     //Action 2:刪除購物車
     const deleteCart = async (skuId: string) => {
       if (isLogin.value) {
@@ -56,15 +65,7 @@ export const useCartStore = defineStore(
           //1.調用刪除購物車API
           await deleteCartAPI([skuId])
           //2.調用獲取購物車列表API
-          const res = await findNewCartListAPI()
-          console.log('findNewCartListAPI 返回：', res)
-          if (res && Array.isArray(res.result)) {
-            //3. 用API購物車列表覆蓋本地購物車列表
-            cartList.value = res.result
-          } else {
-            cartList.value = []
-            console.error('購物車接口返回格式異常', res)
-          }
+          const res = await updateNewList()
         } catch (err) {
           cartList.value = []
           console.error('刪除購物車失敗', err)
@@ -124,6 +125,8 @@ export const useCartStore = defineStore(
       selectedCount,
       selectedPrice,
       clearCart,
+      findNewCartListAPIAction,
+      updateNewList,
     }
   },
   {

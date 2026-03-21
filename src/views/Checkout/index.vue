@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { getCheckOutInfoAPI, createOrderAPI } from '@/apis/checkout'
-import type { CheckoutResult, CreateOrder, UserAddress } from '@/types/typeInterface'
+import type { CheckoutResult, UserAddress } from '@/types/typeInterface'
 import toHK from '@/utils/wordConverter'
+import { useRouter } from 'vue-router'
+import { useCartStore } from '@/stores/cartStore'
+
+const cartStore = useCartStore()
+
+const router = useRouter()
 
 const checkOutInfo = ref<CheckoutResult | null>(null)
 //目前默認地址 （ie, isDefault ===0)
@@ -34,15 +40,24 @@ const confirm = () => {
 const getCheckOutInfo = async () => {
   const res = await getCheckOutInfoAPI()
   checkOutInfo.value = res.result
+  console.log('下單結算-購物車內容: ', res.result)
   //適配默認地址isDefault=0
   curAddress.value = checkOutInfo.value?.userAddresses.find((item) => item.isDefault === 0) ?? null
 }
 
-onMounted(() => {
+onMounted(async () => {
+  nextTick(() => {
+    console.log('nextTick - 進入結算頁前-購物車內容:', cartStore.cartList)
+  })
+  setTimeout(() => {
+    console.log('setTimeout - 進入結算頁前-購物車內容:', cartStore.cartList)
+  }, 100)
+  await cartStore.findNewCartListAPIAction()
   getCheckOutInfo()
 })
 
 const createOrder = async () => {
+  console.log('提交訂單-購物車內容: ', checkOutInfo.value?.goods)
   const res = await createOrderAPI({
     deliveryTimeType: 1,
     payType: 1,
@@ -57,6 +72,15 @@ const createOrder = async () => {
       }) ?? [],
     addressId: curAddress.value?.id || '',
   })
+  const orderId = res.result.id
+  //跳轉頁面
+  router.push({
+    path: '/pay',
+    query: {
+      id: orderId,
+    },
+  })
+  cartStore.updateNewList()
 }
 </script>
 

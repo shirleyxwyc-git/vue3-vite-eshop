@@ -9,8 +9,8 @@ export const getCheckOutInfoAPI = (): Promise<CheckoutResponse> => {
   })
 }
 
-//提交訂單
-export const createOrderAPI = (createOrder: CreateOrder): Promise<APIResponse<String>> => {
+//提交訂單/創建訂單
+export const createOrderAPI = (createOrder: CreateOrder): Promise<APIResponse<any>> => {
   return request({
     url: '/member/order',
     method: 'POST',
