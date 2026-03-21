@@ -69,3 +69,71 @@ export interface MergeCartItem {
   selected: boolean
   count: number
 }
+
+//checkout page =>  getCheckOutInfoAPI
+// 地址型別
+export interface UserAddress {
+  id: string
+  receiver: string
+  contact: string
+  provinceCode: string
+  cityCode: string
+  countyCode: string
+  address: string
+  isDefault: number
+  fullLocation: string
+  postalCode: string | null
+  addressTags: string | null
+}
+
+// 商品型別
+export interface CheckoutGoods {
+  id: string
+  name: string
+  picture: string
+  count: number
+  skuId: string
+  attrsText: string
+  price: string
+  payPrice: string
+  totalPrice: string
+  totalPayPrice: string
+}
+
+// 訂單摘要
+export interface CheckoutSummary {
+  goodsCount: number
+  totalPrice: number
+  totalPayPrice: number
+  postFee: number
+  discountPrice: number
+}
+
+// 最終返回的 result
+export interface CheckoutResult {
+  userAddresses: UserAddress[]
+  goods: CheckoutGoods[]
+  summary: CheckoutSummary
+}
+
+// 整個 API 返回格式
+export interface CheckoutResponse {
+  code: string
+  msg: string
+  result: CheckoutResult
+}
+
+// 提交訂單
+export interface CreateOrderGood {
+  skuId: string
+  count: number
+}
+
+export interface CreateOrder {
+  deliveryTimeType: number
+  payType: number
+  payChannel: number
+  buyerMessage: string
+  goods: CreateOrderGood[]
+  addressId: string
+}
